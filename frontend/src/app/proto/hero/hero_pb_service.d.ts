@@ -13,9 +13,19 @@ type HeroServiceFindOne = {
   readonly responseType: typeof hero_hero_pb.Hero;
 };
 
+type HeroServiceQueryHeroes = {
+  readonly methodName: string;
+  readonly service: typeof HeroService;
+  readonly requestStream: false;
+  readonly responseStream: true;
+  readonly requestType: typeof hero_hero_pb.QueryHeroesRequest;
+  readonly responseType: typeof hero_hero_pb.Hero;
+};
+
 export class HeroService {
   static readonly serviceName: string;
   static readonly FindOne: HeroServiceFindOne;
+  static readonly QueryHeroes: HeroServiceQueryHeroes;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -59,5 +69,6 @@ export class HeroServiceClient {
     requestMessage: hero_hero_pb.HeroById,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.Hero|null) => void
   ): UnaryResponse;
+  queryHeroes(requestMessage: hero_hero_pb.QueryHeroesRequest, metadata?: grpc.Metadata): ResponseStream<hero_hero_pb.Hero>;
 }
 

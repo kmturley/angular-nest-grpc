@@ -4,6 +4,11 @@ package hero;
 
 service HeroService {
   rpc FindOne (HeroById) returns (Hero) {}
+  rpc QueryHeroes(QueryHeroesRequest) returns (stream Hero) {}
+}
+
+message QueryHeroesRequest {
+  string name_prefix = 1;
 }
 
 message HeroById {

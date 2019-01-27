@@ -3,6 +3,26 @@
 
 import * as jspb from "google-protobuf";
 
+export class QueryHeroesRequest extends jspb.Message {
+  getNamePrefix(): string;
+  setNamePrefix(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): QueryHeroesRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: QueryHeroesRequest): QueryHeroesRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: QueryHeroesRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): QueryHeroesRequest;
+  static deserializeBinaryFromReader(message: QueryHeroesRequest, reader: jspb.BinaryReader): QueryHeroesRequest;
+}
+
+export namespace QueryHeroesRequest {
+  export type AsObject = {
+    namePrefix: string,
+  }
+}
+
 export class HeroById extends jspb.Message {
   getId(): number;
   setId(value: number): void;
