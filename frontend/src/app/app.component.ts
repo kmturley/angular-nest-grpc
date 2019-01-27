@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log('api', this.api);
+    console.log('AppComponent', this);
     this.api.get('hero');
   }
 }

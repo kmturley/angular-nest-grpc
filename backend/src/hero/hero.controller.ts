@@ -15,7 +15,7 @@ interface HeroService {
   queryHeroes(data: { name: string }): Observable<any>;
 }
 
-@Controller()
+@Controller('hero')
 export class HeroController implements OnModuleInit {
   @Client(grpcClientOptions) private readonly client: ClientGrpc;
   private heroService: HeroService;
@@ -30,14 +30,21 @@ export class HeroController implements OnModuleInit {
   }
 
   @GrpcMethod('HeroService')
-  findOne(data: HeroById): Hero {
-    const items: Hero[] = [{ id: 1, name: 'John' }, { id: 2, name: 'Doe' }];
+  findOne(data: HeroById, metadata: any): Hero {
+    const items = [
+      { id: 1, name: 'John' },
+      { id: 2, name: 'Doe' },
+      { id: 3, name: 'Billy' },
+    ];
     return items.find(({ id }) => id === data.id);
   }
 
   @GrpcMethod('HeroService')
   queryHeroes(data: QueryHeroesRequest): Array<Hero> {
-    const items: Hero[] = [{ id: 1, name: 'John' }, { id: 2, name: 'Doe' }];
+    const items = [
+      { id: 1, name: 'John' },
+      { id: 2, name: 'Doe' },
+    ];
     return items.filter(({ name }) => name === data.name);
   }
 }
