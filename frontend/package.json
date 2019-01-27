@@ -6,7 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "compile": "protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:my-generated-code --ts_out=service=true:my-generated-code -I ../backend/src src/*.proto",
+    "compile": "./node_modules/protoc/protoc/bin/protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:src/app/proto --ts_out=service=true:src/app/proto -I ../backend/src/ ../backend/src/**/*.proto",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
@@ -24,6 +24,7 @@
     "@improbable-eng/grpc-web": "^0.8.0",
     "core-js": "^2.5.4",
     "google-protobuf": "^3.6.1",
+    "protoc": "^1.0.3",
     "rxjs": "~6.3.3",
     "ts-protoc-gen": "^0.9.0",
     "tslib": "^1.9.0",

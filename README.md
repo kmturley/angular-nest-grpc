@@ -4,7 +4,7 @@ Example full-stack Typescript project using:
 
 * Angular 7.2.x
 * NestJS 5.6.x
-* gRPC 3.6.x
+* Protocol Buffers 3.2.x
 
 
 ## Installation
@@ -39,6 +39,18 @@ Run the Angular frontend:
 View the Angular frontend at:
 
     http://localhost:4200/
+
+
+## Protocol Buffers
+
+If you update backend .proto files, then you will need to recompile them to frontend services using:
+
+    cd frontend
+    npm run compile
+
+You can find out more information about gRPC requests and generated client-side code here:
+
+    https://github.com/improbable-eng/grpc-web/blob/master/client/grpc-web/docs/code-generation.md
 
 
 ## Directory structure
