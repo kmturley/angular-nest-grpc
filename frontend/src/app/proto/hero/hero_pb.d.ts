@@ -4,8 +4,8 @@
 import * as jspb from "google-protobuf";
 
 export class QueryHeroesRequest extends jspb.Message {
-  getNamePrefix(): string;
-  setNamePrefix(value: string): void;
+  getName(): string;
+  setName(value: string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): QueryHeroesRequest.AsObject;
@@ -19,7 +19,7 @@ export class QueryHeroesRequest extends jspb.Message {
 
 export namespace QueryHeroesRequest {
   export type AsObject = {
-    namePrefix: string,
+    name: string,
   }
 }
 

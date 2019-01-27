@@ -58,7 +58,7 @@ proto.hero.QueryHeroesRequest.prototype.toObject = function(opt_includeInstance)
  */
 proto.hero.QueryHeroesRequest.toObject = function(includeInstance, msg) {
   var f, obj = {
-    namePrefix: jspb.Message.getFieldWithDefault(msg, 1, "")
+    name: jspb.Message.getFieldWithDefault(msg, 1, "")
   };
 
   if (includeInstance) {
@@ -97,7 +97,7 @@ proto.hero.QueryHeroesRequest.deserializeBinaryFromReader = function(msg, reader
     switch (field) {
     case 1:
       var value = /** @type {string} */ (reader.readString());
-      msg.setNamePrefix(value);
+      msg.setName(value);
       break;
     default:
       reader.skipField();
@@ -127,7 +127,7 @@ proto.hero.QueryHeroesRequest.prototype.serializeBinary = function() {
  */
 proto.hero.QueryHeroesRequest.serializeBinaryToWriter = function(message, writer) {
   var f = undefined;
-  f = message.getNamePrefix();
+  f = message.getName();
   if (f.length > 0) {
     writer.writeString(
       1,
@@ -138,16 +138,16 @@ proto.hero.QueryHeroesRequest.serializeBinaryToWriter = function(message, writer
 
 
 /**
- * optional string name_prefix = 1;
+ * optional string name = 1;
  * @return {string}
  */
-proto.hero.QueryHeroesRequest.prototype.getNamePrefix = function() {
+proto.hero.QueryHeroesRequest.prototype.getName = function() {
   return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
 };
 
 
 /** @param {string} value */
-proto.hero.QueryHeroesRequest.prototype.setNamePrefix = function(value) {
+proto.hero.QueryHeroesRequest.prototype.setName = function(value) {
   jspb.Message.setField(this, 1, value);
 };
 

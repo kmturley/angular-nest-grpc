@@ -8,7 +8,7 @@ service HeroService {
 }
 
 message QueryHeroesRequest {
-  string name_prefix = 1;
+  string name = 1;
 }
 
 message HeroById {

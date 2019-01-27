@@ -19,6 +19,7 @@ async function bootstrap() {
    */
   const app = await NestFactory.create(ApplicationModule);
   app.connectMicroservice(grpcClientOptions);
+  app.enableCors();
   await app.startAllMicroservicesAsync();
   await app.listen(3001);
 }

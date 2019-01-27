@@ -17,7 +17,7 @@ export class ApiService {
   get(path) {
     console.log('ApiService.get', path);
     const queryHeroesRequest = new QueryHeroesRequest();
-    queryHeroesRequest.setNamePrefix('Jo');
+    queryHeroesRequest.setName('John');
     grpc.invoke(HeroService.QueryHeroes, {
       request: queryHeroesRequest,
       host: 'http://localhost:3001',
