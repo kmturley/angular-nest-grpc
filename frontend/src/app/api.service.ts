@@ -19,9 +19,14 @@ export class ApiService {
     console.log('ApiService.get', path);
     const req = new HeroById();
     req.setId(1);
-    this.client.findOne(req, null, (data) => {
-      console.log('findOne.success', data);
+    this.client.findOne(req, null, (err, response) => {
+      if (err) {
+        console.error('findOne.error', err);
+        return;
+      }
+      console.log('findOne.success', response);
     });
+
     // const req = new QueryHeroesRequest();
     // req.setName('John');
     // this.client.queryHeroes(req);
