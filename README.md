@@ -53,6 +53,20 @@ You can find out more information about gRPC requests and generated client-side 
     https://github.com/improbable-eng/grpc-web/blob/master/client/grpc-web/docs/code-generation.md
 
 
+## Exploring and testing endpoints
+
+Install grpc_cli using:
+
+    brew tap grpc/grpc
+    brew install --with-plugins grpc
+
+Then view the endpoints using:
+
+    export GRPC_VERBOSITY=DEBUG
+    grpc_cli ls localhost:3001
+    grpc_cli call localhost:3001 FindOne "id: 1" --protofiles=backend/src/hero/hero.proto
+
+
 ## Directory structure
 
     /backend                               --> Backend source files
