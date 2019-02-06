@@ -27,9 +27,9 @@ Run the Nest backend:
     cd backend
     npm start
 
-View the Nest backend at:
+Access the Nest gRPC microservice at:
 
-    http://localhost:3100/
+    http://localhost:4201/
 
 Run the Angular frontend:
 
@@ -63,8 +63,8 @@ Install grpc_cli using:
 Then view the endpoints using:
 
     export GRPC_VERBOSITY=DEBUG
-    grpc_cli ls localhost:3001
-    grpc_cli call localhost:3001 FindOne "id: 1" --protofiles=backend/src/hero/hero.proto
+    grpc_cli ls localhost:50051
+    grpc_cli call localhost:50051 FindOne "id: 1" --protofiles=backend/src/hero/hero.proto
 
 
 ## Directory structure
