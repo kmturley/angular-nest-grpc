@@ -4,7 +4,7 @@
   "description": "Angular gRPC example",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --host 0.0.0.0",
     "build": "ng build",
     "compile": "./node_modules/protoc/protoc/bin/protoc --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts --js_out=import_style=commonjs,binary:src/app/proto --ts_out=service=true:src/app/proto -I ../backend/src/ ../backend/src/**/*.proto",
     "test": "ng test",

@@ -9,32 +9,24 @@ Example full-stack Typescript project using:
 
 ## Installation
 
-Install backend dependencies using:
+Install dependencies using:
 
-    cd backend
-    npm install
-
-Install frontend dependencies using:
-
-    cd frontend
-    npm install
+    docker-compose build
 
 
 ## Usage
 
-Run the Nest backend:
+Run backend, frontend and proxy together using:
 
-    cd backend
-    npm start
+    docker-compose up
 
 Access the Nest gRPC microservice at:
 
-    http://localhost:4201/
+    http://localhost:50051/
 
-Run the Angular frontend:
+Access the Envoy Proxy at:
 
-    cd frontend
-    npm start
+    http://localhost:8080/
 
 View the Angular frontend at:
 

@@ -25,6 +25,7 @@
     "@nestjs/microservices": "^5.4.0",
     "@nestjs/testing": "^5.4.0",
     "@nestjs/websockets": "^5.4.0",
+    "google-protobuf": "^3.7.0-rc.2",
     "grpc": "^1.18.0",
     "reflect-metadata": "^0.1.12",
     "rimraf": "^2.6.3",

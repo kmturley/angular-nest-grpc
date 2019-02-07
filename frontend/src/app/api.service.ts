@@ -10,7 +10,7 @@ export class ApiService {
   client: HeroServiceClient;
 
   constructor() {
-    this.client = new HeroServiceClient('http://localhost:4201');
+    this.client = new HeroServiceClient('http://localhost:8080');
   }
 
   get(path) {
