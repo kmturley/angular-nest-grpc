@@ -15,6 +15,9 @@ services:
   frontend:
     build: frontend
     command: npm start
+    depends_on:
+      - backend
+      - proxy
     ports:
       - 4200:4200
     networks:
