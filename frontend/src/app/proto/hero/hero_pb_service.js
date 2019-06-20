@@ -10,8 +10,8 @@ var HeroService = (function () {
   return HeroService;
 }());
 
-HeroService.FindOne = {
-  methodName: "FindOne",
+HeroService.GetHeroById = {
+  methodName: "GetHeroById",
   service: HeroService,
   requestStream: false,
   responseStream: false,
@@ -19,13 +19,13 @@ HeroService.FindOne = {
   responseType: hero_hero_pb.Hero
 };
 
-HeroService.QueryHeroes = {
-  methodName: "QueryHeroes",
+HeroService.ListHeroesByName = {
+  methodName: "ListHeroesByName",
   service: HeroService,
   requestStream: false,
-  responseStream: true,
-  requestType: hero_hero_pb.QueryHeroesRequest,
-  responseType: hero_hero_pb.Hero
+  responseStream: false,
+  requestType: hero_hero_pb.HeroByName,
+  responseType: hero_hero_pb.HeroList
 };
 
 exports.HeroService = HeroService;
@@ -35,11 +35,11 @@ function HeroServiceClient(serviceHost, options) {
   this.options = options || {};
 }
 
-HeroServiceClient.prototype.findOne = function findOne(requestMessage, metadata, callback) {
+HeroServiceClient.prototype.getHeroById = function getHeroById(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(HeroService.FindOne, {
+  var client = grpc.unary(HeroService.GetHeroById, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
@@ -66,40 +66,32 @@ HeroServiceClient.prototype.findOne = function findOne(requestMessage, metadata,
   };
 };
 
-HeroServiceClient.prototype.queryHeroes = function queryHeroes(requestMessage, metadata) {
-  var listeners = {
-    data: [],
-    end: [],
-    status: []
-  };
-  var client = grpc.invoke(HeroService.QueryHeroes, {
+HeroServiceClient.prototype.listHeroesByName = function listHeroesByName(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(HeroService.ListHeroesByName, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
     transport: this.options.transport,
     debug: this.options.debug,
-    onMessage: function (responseMessage) {
-      listeners.data.forEach(function (handler) {
-        handler(responseMessage);
-      });
-    },
-    onEnd: function (status, statusMessage, trailers) {
-      listeners.end.forEach(function (handler) {
-        handler();
-      });
-      listeners.status.forEach(function (handler) {
-        handler({ code: status, details: statusMessage, metadata: trailers });
-      });
-      listeners = null;
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
     }
   });
   return {
-    on: function (type, handler) {
-      listeners[type].push(handler);
-      return this;
-    },
     cancel: function () {
-      listeners = null;
+      callback = null;
       client.close();
     }
   };

@@ -4,7 +4,7 @@
 import * as hero_hero_pb from "../hero/hero_pb";
 import {grpc} from "@improbable-eng/grpc-web";
 
-type HeroServiceFindOne = {
+type HeroServiceGetHeroById = {
   readonly methodName: string;
   readonly service: typeof HeroService;
   readonly requestStream: false;
@@ -13,19 +13,19 @@ type HeroServiceFindOne = {
   readonly responseType: typeof hero_hero_pb.Hero;
 };
 
-type HeroServiceQueryHeroes = {
+type HeroServiceListHeroesByName = {
   readonly methodName: string;
   readonly service: typeof HeroService;
   readonly requestStream: false;
-  readonly responseStream: true;
-  readonly requestType: typeof hero_hero_pb.QueryHeroesRequest;
-  readonly responseType: typeof hero_hero_pb.Hero;
+  readonly responseStream: false;
+  readonly requestType: typeof hero_hero_pb.HeroByName;
+  readonly responseType: typeof hero_hero_pb.HeroList;
 };
 
 export class HeroService {
   static readonly serviceName: string;
-  static readonly FindOne: HeroServiceFindOne;
-  static readonly QueryHeroes: HeroServiceQueryHeroes;
+  static readonly GetHeroById: HeroServiceGetHeroById;
+  static readonly ListHeroesByName: HeroServiceListHeroesByName;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -60,15 +60,23 @@ export class HeroServiceClient {
   readonly serviceHost: string;
 
   constructor(serviceHost: string, options?: grpc.RpcOptions);
-  findOne(
+  getHeroById(
     requestMessage: hero_hero_pb.HeroById,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.Hero|null) => void
   ): UnaryResponse;
-  findOne(
+  getHeroById(
     requestMessage: hero_hero_pb.HeroById,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.Hero|null) => void
   ): UnaryResponse;
-  queryHeroes(requestMessage: hero_hero_pb.QueryHeroesRequest, metadata?: grpc.Metadata): ResponseStream<hero_hero_pb.Hero>;
+  listHeroesByName(
+    requestMessage: hero_hero_pb.HeroByName,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: hero_hero_pb.HeroList|null) => void
+  ): UnaryResponse;
+  listHeroesByName(
+    requestMessage: hero_hero_pb.HeroByName,
+    callback: (error: ServiceError|null, responseMessage: hero_hero_pb.HeroList|null) => void
+  ): UnaryResponse;
 }
 

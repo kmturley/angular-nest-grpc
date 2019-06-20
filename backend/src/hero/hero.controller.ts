@@ -7,12 +7,12 @@ import {
 import { Observable } from 'rxjs';
 import { grpcClientOptions } from '../grpc-client.options';
 import { HeroById } from './interfaces/hero-by-id.interface';
-import { QueryHeroesRequest } from './interfaces/query-heroes-request';
-import { Hero } from './interfaces/hero.interface';
+import { HeroByName } from './interfaces/hero-by-name.interface';
+import { Hero, HeroList } from './interfaces/hero.interface';
 
 interface HeroService {
-  findOne(data: { id: number }): Observable<any>;
-  queryHeroes(data: { name: string }): Observable<any>;
+  getHeroById(data: { id: number }): Observable<any>;
+  listHeroesByName(data: { name: string }): Observable<any>;
 }
 
 @Controller()
@@ -26,35 +26,39 @@ export class HeroController implements OnModuleInit {
 
   @Get()
   call(): Observable<any> {
-    return this.heroService.findOne({ id: 1 });
+    return this.heroService.getHeroById({ id: 1 });
   }
 
   // @Get(':id')
-  // findOne(@Param('id') id: string): Hero {
+  // getHeroById(@Param('id') id: string): Hero {
   //   const items = [
   //     { id: 1, name: 'John' },
   //     { id: 2, name: 'Doe' },
   //     { id: 3, name: 'Billy' },
+  //     { id: 4, name: 'Joey' },
   //   ];
   //   return items.find((item) => item.id === Number(id));
   // }
 
   @GrpcMethod('HeroService')
-  findOne(data: HeroById, metadata: any): Hero {
+  getHeroById(data: HeroById, metadata: any): Hero {
     const items = [
       { id: 1, name: 'John' },
       { id: 2, name: 'Doe' },
       { id: 3, name: 'Billy' },
+      { id: 4, name: 'Joey' },
     ];
     return items.find(({ id }) => id === data.id);
   }
 
   @GrpcMethod('HeroService')
-  queryHeroes(data: QueryHeroesRequest): Array<Hero> {
+  listHeroesByName(data: HeroByName, metadata: any): object {
     const items = [
       { id: 1, name: 'John' },
       { id: 2, name: 'Doe' },
+      { id: 3, name: 'Billy' },
+      { id: 4, name: 'Joey' },
     ];
-    return items.filter(({ name }) => name === data.name);
+    return { heroes: items.filter(({ name }) => name.startsWith(data.name)) };
   }
 }
