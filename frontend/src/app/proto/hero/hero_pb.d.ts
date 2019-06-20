@@ -3,26 +3,6 @@
 
 import * as jspb from "google-protobuf";
 
-export class QueryHeroesRequest extends jspb.Message {
-  getName(): string;
-  setName(value: string): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): QueryHeroesRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: QueryHeroesRequest): QueryHeroesRequest.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: QueryHeroesRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): QueryHeroesRequest;
-  static deserializeBinaryFromReader(message: QueryHeroesRequest, reader: jspb.BinaryReader): QueryHeroesRequest;
-}
-
-export namespace QueryHeroesRequest {
-  export type AsObject = {
-    name: string,
-  }
-}
-
 export class HeroById extends jspb.Message {
   getId(): number;
   setId(value: number): void;
@@ -64,6 +44,28 @@ export namespace Hero {
   export type AsObject = {
     id: number,
     name: string,
+  }
+}
+
+export class HeroList extends jspb.Message {
+  clearHeroesList(): void;
+  getHeroesList(): Array<Hero>;
+  setHeroesList(value: Array<Hero>): void;
+  addHeroes(value?: Hero, index?: number): Hero;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): HeroList.AsObject;
+  static toObject(includeInstance: boolean, msg: HeroList): HeroList.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: HeroList, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): HeroList;
+  static deserializeBinaryFromReader(message: HeroList, reader: jspb.BinaryReader): HeroList;
+}
+
+export namespace HeroList {
+  export type AsObject = {
+    heroesList: Array<Hero.AsObject>,
   }
 }
 

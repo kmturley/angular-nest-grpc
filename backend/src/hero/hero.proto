@@ -3,12 +3,8 @@ syntax = "proto3";
 package hero;
 
 service HeroService {
-  rpc FindOne (HeroById) returns (Hero) {}
-  rpc QueryHeroes(QueryHeroesRequest) returns (stream Hero) {}
-}
-
-message QueryHeroesRequest {
-  string name = 1;
+  rpc GetHeroById(HeroById) returns (Hero) {}
+  rpc ListHeroesById(HeroById) returns (HeroList) {}
 }
 
 message HeroById {
@@ -18,4 +14,8 @@ message HeroById {
 message Hero {
   int32 id = 1;
   string name = 2;
+}
+
+message HeroList {
+  repeated Hero heroes = 1;
 }

@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
       this.response = `Loaded ${data['name']} using gRPC!`;
 
       this.response2 = 'loading...';
-      this.api.query('hero', 'Billy').then((data)=> {
+      this.api.list('hero', 2).then((data)=> {
         console.log('api.get', data);
         this.response2 = `Loaded ${data['name']} using gRPC!`;
       });
