@@ -54,7 +54,9 @@ export class HeroController implements OnModuleInit {
     const items = [
       { id: 1, name: 'John' },
       { id: 2, name: 'Doe' },
+      { id: 3, name: 'Billy' },
     ];
+    console.log(items.filter(({ name }) => name === data.name));
     return items.filter(({ name }) => name === data.name);
   }
 }

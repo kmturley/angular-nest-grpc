@@ -9,6 +9,7 @@ import { ApiService } from './api.service';
 })
 export class AppComponent implements OnInit {
   response = '';
+  response2 = '';
 
   constructor(
     private api: ApiService
@@ -17,9 +18,16 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     console.log('AppComponent', this);
     this.response = 'loading...';
+
     this.api.get('hero', 1).then((data)=> {
       console.log('api.get', data);
       this.response = `Loaded ${data['name']} using gRPC!`;
+
+      this.response2 = 'loading...';
+      this.api.query('hero', 'Billy').then((data)=> {
+        console.log('api.get', data);
+        this.response2 = `Loaded ${data['name']} using gRPC!`;
+      });
     });
   }
 }
