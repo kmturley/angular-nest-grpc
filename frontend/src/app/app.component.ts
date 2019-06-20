@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { ApiService } from './api.service';
+import { Observable } from 'rxjs';
+import { Hero, HeroList } from './proto/hero/hero_pb';
 
 @Component({
   selector: 'app-root',
@@ -8,8 +10,10 @@ import { ApiService } from './api.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  hero = {};
-  heroes = [];
+  hero: Hero;
+  heroes: HeroList;
+  heroStream: Hero;
+  heroesStream: HeroList;
 
   constructor(
     private api: ApiService
@@ -17,17 +21,33 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     console.log('AppComponent', this);
-    this.hero = 'loading...';
+    this.getHero();
+  }
 
-    this.api.get('hero', 1).then((data)=> {
-      console.log('api.get', data);
+  getHero() {
+    this.api.get('hero', 1).then((data: Hero)=> {
       this.hero = data;
+      this.getHeroes();
+    });
+  }
 
-      this.heroes = [];
-      this.api.list('hero', 'Jo').then((data: object)=> {
-        console.log('api.get', data);
-        this.heroes = data['heroesList'];
-      });
+  getHeroes() {
+    this.api.list('hero', 'Jo').then((data: object)=> {
+      this.heroes = data['heroesList'] as HeroList;
+      this.getHeroStream();
+    });
+  }
+
+  getHeroStream() {
+    this.api.getStream('hero', 2).then((data: Hero)=> {
+      this.heroStream = data;
+      this.getHeroesStream();
+    });
+  }
+
+  getHeroesStream() {
+    this.api.listStream('hero', 'Bi').then((data: object)=> {
+      this.heroesStream = data['heroesList'] as HeroList;
     });
   }
 }
