@@ -56,8 +56,14 @@ Then view the endpoints using:
 
     export GRPC_VERBOSITY=DEBUG
     grpc_cli ls localhost:50051
+
+    // call methods
     grpc_cli call localhost:50051 GetHeroById "id: 1" --protofiles=backend/src/hero/hero.proto
     grpc_cli call localhost:50051 ListHeroesByName "name: 'Jo'" --protofiles=backend/src/hero/hero.proto
+
+    // call streaming methods
+    grpc_cli call localhost:50051 GetHeroByIdStream "id: 2" --protofiles=backend/src/hero/hero.proto
+    grpc_cli call localhost:50051 ListHeroesByNameStream "name: 'Bi'" --protofiles=backend/src/hero/hero.proto
 
 
 ## Directory structure

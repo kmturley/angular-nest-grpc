@@ -28,6 +28,24 @@ HeroService.ListHeroesByName = {
   responseType: hero_hero_pb.HeroList
 };
 
+HeroService.GetHeroByIdStream = {
+  methodName: "GetHeroByIdStream",
+  service: HeroService,
+  requestStream: true,
+  responseStream: true,
+  requestType: hero_hero_pb.HeroById,
+  responseType: hero_hero_pb.Hero
+};
+
+HeroService.ListHeroesByNameStream = {
+  methodName: "ListHeroesByNameStream",
+  service: HeroService,
+  requestStream: true,
+  responseStream: true,
+  requestType: hero_hero_pb.HeroByName,
+  responseType: hero_hero_pb.HeroList
+};
+
 exports.HeroService = HeroService;
 
 function HeroServiceClient(serviceHost, options) {
@@ -92,6 +110,96 @@ HeroServiceClient.prototype.listHeroesByName = function listHeroesByName(request
   return {
     cancel: function () {
       callback = null;
+      client.close();
+    }
+  };
+};
+
+HeroServiceClient.prototype.getHeroByIdStream = function getHeroByIdStream(metadata) {
+  var listeners = {
+    data: [],
+    end: [],
+    status: []
+  };
+  var client = grpc.client(HeroService.GetHeroByIdStream, {
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport
+  });
+  client.onEnd(function (status, statusMessage, trailers) {
+    listeners.end.forEach(function (handler) {
+      handler();
+    });
+    listeners.status.forEach(function (handler) {
+      handler({ code: status, details: statusMessage, metadata: trailers });
+    });
+    listeners = null;
+  });
+  client.onMessage(function (message) {
+    listeners.data.forEach(function (handler) {
+      handler(message);
+    })
+  });
+  client.start(metadata);
+  return {
+    on: function (type, handler) {
+      listeners[type].push(handler);
+      return this;
+    },
+    write: function (requestMessage) {
+      client.send(requestMessage);
+      return this;
+    },
+    end: function () {
+      client.finishSend();
+    },
+    cancel: function () {
+      listeners = null;
+      client.close();
+    }
+  };
+};
+
+HeroServiceClient.prototype.listHeroesByNameStream = function listHeroesByNameStream(metadata) {
+  var listeners = {
+    data: [],
+    end: [],
+    status: []
+  };
+  var client = grpc.client(HeroService.ListHeroesByNameStream, {
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport
+  });
+  client.onEnd(function (status, statusMessage, trailers) {
+    listeners.end.forEach(function (handler) {
+      handler();
+    });
+    listeners.status.forEach(function (handler) {
+      handler({ code: status, details: statusMessage, metadata: trailers });
+    });
+    listeners = null;
+  });
+  client.onMessage(function (message) {
+    listeners.data.forEach(function (handler) {
+      handler(message);
+    })
+  });
+  client.start(metadata);
+  return {
+    on: function (type, handler) {
+      listeners[type].push(handler);
+      return this;
+    },
+    write: function (requestMessage) {
+      client.send(requestMessage);
+      return this;
+    },
+    end: function () {
+      client.finishSend();
+    },
+    cancel: function () {
+      listeners = null;
       client.close();
     }
   };

@@ -5,6 +5,8 @@ package hero;
 service HeroService {
   rpc GetHeroById(HeroById) returns (Hero) {}
   rpc ListHeroesByName(HeroByName) returns (HeroList) {}
+  rpc GetHeroByIdStream(stream HeroById) returns (stream Hero) {}
+  rpc ListHeroesByNameStream(stream HeroByName) returns (stream HeroList) {}
 }
 
 message HeroById {

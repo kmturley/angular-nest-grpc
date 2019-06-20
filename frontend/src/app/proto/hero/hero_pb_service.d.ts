@@ -22,10 +22,30 @@ type HeroServiceListHeroesByName = {
   readonly responseType: typeof hero_hero_pb.HeroList;
 };
 
+type HeroServiceGetHeroByIdStream = {
+  readonly methodName: string;
+  readonly service: typeof HeroService;
+  readonly requestStream: true;
+  readonly responseStream: true;
+  readonly requestType: typeof hero_hero_pb.HeroById;
+  readonly responseType: typeof hero_hero_pb.Hero;
+};
+
+type HeroServiceListHeroesByNameStream = {
+  readonly methodName: string;
+  readonly service: typeof HeroService;
+  readonly requestStream: true;
+  readonly responseStream: true;
+  readonly requestType: typeof hero_hero_pb.HeroByName;
+  readonly responseType: typeof hero_hero_pb.HeroList;
+};
+
 export class HeroService {
   static readonly serviceName: string;
   static readonly GetHeroById: HeroServiceGetHeroById;
   static readonly ListHeroesByName: HeroServiceListHeroesByName;
+  static readonly GetHeroByIdStream: HeroServiceGetHeroByIdStream;
+  static readonly ListHeroesByNameStream: HeroServiceListHeroesByNameStream;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -78,5 +98,7 @@ export class HeroServiceClient {
     requestMessage: hero_hero_pb.HeroByName,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.HeroList|null) => void
   ): UnaryResponse;
+  getHeroByIdStream(metadata?: grpc.Metadata): BidirectionalStream<hero_hero_pb.HeroById, hero_hero_pb.Hero>;
+  listHeroesByNameStream(metadata?: grpc.Metadata): BidirectionalStream<hero_hero_pb.HeroByName, hero_hero_pb.HeroList>;
 }
 
