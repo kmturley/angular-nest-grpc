@@ -13,19 +13,19 @@ type HeroServiceGetHeroById = {
   readonly responseType: typeof hero_hero_pb.Hero;
 };
 
-type HeroServiceListHeroesById = {
+type HeroServiceListHeroesByName = {
   readonly methodName: string;
   readonly service: typeof HeroService;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof hero_hero_pb.HeroById;
+  readonly requestType: typeof hero_hero_pb.HeroByName;
   readonly responseType: typeof hero_hero_pb.HeroList;
 };
 
 export class HeroService {
   static readonly serviceName: string;
   static readonly GetHeroById: HeroServiceGetHeroById;
-  static readonly ListHeroesById: HeroServiceListHeroesById;
+  static readonly ListHeroesByName: HeroServiceListHeroesByName;
 }
 
 export type ServiceError = { message: string, code: number; metadata: grpc.Metadata }
@@ -69,13 +69,13 @@ export class HeroServiceClient {
     requestMessage: hero_hero_pb.HeroById,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.Hero|null) => void
   ): UnaryResponse;
-  listHeroesById(
-    requestMessage: hero_hero_pb.HeroById,
+  listHeroesByName(
+    requestMessage: hero_hero_pb.HeroByName,
     metadata: grpc.Metadata,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.HeroList|null) => void
   ): UnaryResponse;
-  listHeroesById(
-    requestMessage: hero_hero_pb.HeroById,
+  listHeroesByName(
+    requestMessage: hero_hero_pb.HeroByName,
     callback: (error: ServiceError|null, responseMessage: hero_hero_pb.HeroList|null) => void
   ): UnaryResponse;
 }

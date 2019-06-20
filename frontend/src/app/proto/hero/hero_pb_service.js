@@ -19,12 +19,12 @@ HeroService.GetHeroById = {
   responseType: hero_hero_pb.Hero
 };
 
-HeroService.ListHeroesById = {
-  methodName: "ListHeroesById",
+HeroService.ListHeroesByName = {
+  methodName: "ListHeroesByName",
   service: HeroService,
   requestStream: false,
   responseStream: false,
-  requestType: hero_hero_pb.HeroById,
+  requestType: hero_hero_pb.HeroByName,
   responseType: hero_hero_pb.HeroList
 };
 
@@ -66,11 +66,11 @@ HeroServiceClient.prototype.getHeroById = function getHeroById(requestMessage, m
   };
 };
 
-HeroServiceClient.prototype.listHeroesById = function listHeroesById(requestMessage, metadata, callback) {
+HeroServiceClient.prototype.listHeroesByName = function listHeroesByName(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(HeroService.ListHeroesById, {
+  var client = grpc.unary(HeroService.ListHeroesByName, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

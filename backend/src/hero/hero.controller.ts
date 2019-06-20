@@ -7,11 +7,12 @@ import {
 import { Observable } from 'rxjs';
 import { grpcClientOptions } from '../grpc-client.options';
 import { HeroById } from './interfaces/hero-by-id.interface';
+import { HeroByName } from './interfaces/hero-by-name.interface';
 import { Hero, HeroList } from './interfaces/hero.interface';
 
 interface HeroService {
   getHeroById(data: { id: number }): Observable<any>;
-  listHeroesById(data: { id: number }): Observable<any>;
+  listHeroesByName(data: { name: string }): Observable<any>;
 }
 
 @Controller()
@@ -34,6 +35,7 @@ export class HeroController implements OnModuleInit {
   //     { id: 1, name: 'John' },
   //     { id: 2, name: 'Doe' },
   //     { id: 3, name: 'Billy' },
+  //     { id: 4, name: 'Joey' },
   //   ];
   //   return items.find((item) => item.id === Number(id));
   // }
@@ -44,18 +46,19 @@ export class HeroController implements OnModuleInit {
       { id: 1, name: 'John' },
       { id: 2, name: 'Doe' },
       { id: 3, name: 'Billy' },
+      { id: 4, name: 'Joey' },
     ];
     return items.find(({ id }) => id === data.id);
   }
 
   @GrpcMethod('HeroService')
-  listHeroesById(data: HeroById, metadata: any): HeroList {
+  listHeroesByName(data: HeroByName, metadata: any): object {
     const items = [
       { id: 1, name: 'John' },
       { id: 2, name: 'Doe' },
       { id: 3, name: 'Billy' },
+      { id: 4, name: 'Joey' },
     ];
-    console.log(items.filter(({ id }) => id === data.id));
-    return items.filter(({ id }) => id === data.id);
+    return { heroes: items.filter(({ name }) => name.startsWith(data.name)) };
   }
 }

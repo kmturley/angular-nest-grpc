@@ -4,11 +4,15 @@ package hero;
 
 service HeroService {
   rpc GetHeroById(HeroById) returns (Hero) {}
-  rpc ListHeroesById(HeroById) returns (HeroList) {}
+  rpc ListHeroesByName(HeroByName) returns (HeroList) {}
 }
 
 message HeroById {
   int32 id = 1;
+}
+
+message HeroByName {
+  string name = 1;
 }
 
 message Hero {
