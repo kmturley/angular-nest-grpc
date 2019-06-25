@@ -12,8 +12,8 @@ import { Hero, HeroList } from './proto/hero/hero_pb';
 export class AppComponent implements OnInit {
   hero: Hero;
   heroes: HeroList;
-  heroStream: Hero;
-  heroesStream: HeroList;
+  heroStream: Observable<Hero>;
+  heroesStream: Observable<HeroList>;
 
   constructor(
     private api: ApiService
@@ -25,29 +25,25 @@ export class AppComponent implements OnInit {
   }
 
   getHero() {
-    this.api.get('hero', 1).then((data: Hero)=> {
+    this.api.get('hero', 1).then((data: Hero) => {
       this.hero = data;
       this.getHeroes();
     });
   }
 
   getHeroes() {
-    this.api.list('hero', 'Jo').then((data: object)=> {
+    this.api.list('hero', 'Jo').then((data: object) => {
       this.heroes = data['heroesList'] as HeroList;
       this.getHeroStream();
     });
   }
 
   getHeroStream() {
-    this.api.getStream('hero', 2).then((data: Hero)=> {
-      this.heroStream = data;
-      this.getHeroesStream();
-    });
+    this.heroStream = this.api.getStream('hero', 2);
+    this.getHeroesStream();
   }
 
   getHeroesStream() {
-    this.api.listStream('hero', 'Bi').then((data: object)=> {
-      this.heroesStream = data['heroesList'] as HeroList;
-    });
+    this.heroesStream = this.api.listStream('hero', 'Bi');
   }
 }

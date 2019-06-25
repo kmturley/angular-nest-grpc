@@ -11,7 +11,7 @@
 <h2>grpc streaming methods</h2>
 
 <p><b>getHeroByIdStream</b></p>
-<p>{{ heroStream | json }}</p>
+<p>{{ heroStream | async | json }}</p>
 
 <p><b>listHeroesByNameStream</b></p>
-<p>{{ heroesStream | json }}</p>
+<p>{{ heroesStream | async | json }}</p>
