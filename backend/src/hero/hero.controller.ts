@@ -1,31 +1,31 @@
-import { Get, OnModuleInit, Controller, Param } from '@nestjs/common';
+import { Controller, Get, Inject, OnModuleInit, Param } from '@nestjs/common';
 import {
-  Client,
+  ClientGrpc,
   GrpcMethod,
   GrpcStreamMethod,
-  ClientGrpc,
 } from '@nestjs/microservices';
-import { Observable, Subject } from 'rxjs';
-import { grpcClientOptions } from '../grpc-client.options';
+import { Observable, ReplaySubject, Subject } from 'rxjs';
+import { toArray } from 'rxjs/operators';
 import { HeroById } from './interfaces/hero-by-id.interface';
-import { HeroByName } from './interfaces/hero-by-name.interface';
 import { Hero, HeroList } from './interfaces/hero.interface';
 
 interface HeroService {
-  getHeroById(data: { id: number }): Observable<any>;
-  listHeroesByName(data: { name: string }): Observable<any>;
+  getHeroes(data: { id: number }): Observable<HeroList>;
+  getHeroById(data: { id: number }): Observable<Hero>;
+  getHeroesStream(upstream: Observable<HeroById>): Observable<HeroList>;
+  getHeroByIdStream(upstream: Observable<HeroById>): Observable<Hero>;
 }
-
-@Controller()
+@Controller('hero')
 export class HeroController implements OnModuleInit {
-  @Client(grpcClientOptions) private readonly client: ClientGrpc;
   private heroService: HeroService;
-  private items = [
+  private readonly items: Hero[] = [
     { id: 1, name: 'John' },
     { id: 2, name: 'Doe' },
     { id: 3, name: 'Billy' },
     { id: 4, name: 'Joey' },
   ];
+
+  constructor(@Inject('HERO_PACKAGE') private readonly client: ClientGrpc) {}
 
   onModuleInit() {
     this.heroService = this.client.getService<HeroService>('HeroService');
@@ -34,49 +34,50 @@ export class HeroController implements OnModuleInit {
   // http methods
 
   @Get()
-  call(): Observable<any> {
-    return this.heroService.getHeroById({ id: 1 });
+  getList(): Observable<HeroList> {
+    return this.heroService.getHeroes({ id: 1 }); // must return arrays as objects 
   }
 
   @Get(':id')
-  getHero(@Param('id') id: string): Hero {
-    return this.items.find((item) => item.id === Number(id));
+  getItem(@Param('id') id: string): Observable<Hero> {
+    return this.heroService.getHeroById({ id: +id });
   }
 
   // grpc methods
 
   @GrpcMethod('HeroService')
-  getHeroById(data: HeroById, metadata: any): Hero {
-    return this.items.find(({ id }) => id === data.id);
+  getHeroes(data: HeroById): HeroList {
+    return { heroes: this.items }; // must return arrays as objects 
   }
 
   @GrpcMethod('HeroService')
-  listHeroesByName(data: HeroByName, metadata: any): object {
-    return { heroes: this.items.filter(({ name }) => name.startsWith(data.name)) };
+  getHeroById(data: HeroById): Hero {
+    return this.items.find(({ id }) => id === data.id);
   }
 
   // grpc streaming methods
 
   @GrpcStreamMethod('HeroService')
-  async getHeroByIdStream(messages: Observable<any>): Promise<Hero> {
-    return new Promise<Hero>((resolve, reject) => {
-      messages.subscribe(msg => {
-        resolve(this.items.find(({ id }) => id === msg.id));
-      }, err => {
-        reject(err);
-      });
-    });
+  getHeroesStream(data$: Observable<HeroById>): Observable<HeroList> {
+    const hero$ = new Subject<HeroList>();
+    const onNext = (heroById: HeroById) => {
+      hero$.next({ heroes: this.items }); // must return arrays as objects 
+    };
+    const onComplete = () => hero$.complete();
+    data$.subscribe(onNext, null, onComplete);
+    return hero$.asObservable();
   }
 
   @GrpcStreamMethod('HeroService')
-  async listHeroesByNameStream(messages: Observable<any>): Promise<object> {
-    return new Promise<object>((resolve, reject) => {
-      messages.subscribe(msg => {
-        resolve({ heroes: this.items.filter(({ name }) => name.startsWith(msg.name)) });
-      }, err => {
-        reject(err);
-      });
-    });
+  getHeroByIdStream(data$: Observable<HeroById>): Observable<Hero> {
+    const hero$ = new Subject<Hero>();
+    const onNext = (heroById: HeroById) => {
+      const item = this.items.find(({ id }) => id === heroById.id);
+      hero$.next(item);
+    };
+    const onComplete = () => hero$.complete();
+    data$.subscribe(onNext, null, onComplete);
+    return hero$.asObservable();
   }
 
 }

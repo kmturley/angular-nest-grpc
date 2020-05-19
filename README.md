@@ -50,21 +50,24 @@ You can find out more information about gRPC requests and generated client-side 
 
 Install grpc_cli using:
 
-    brew tap grpc/grpc
-    brew install --with-plugins grpc
+    npm install -g grpcc
 
 Then view the endpoints using:
 
-    export GRPC_VERBOSITY=DEBUG
-    grpc_cli ls localhost:50051
+    grpcc -i --proto ./backend/src/hero/hero.proto --address localhost:50051
 
-    // call methods
-    grpc_cli call localhost:50051 GetHeroById "id: 1" --protofiles=backend/src/hero/hero.proto
-    grpc_cli call localhost:50051 ListHeroesByName "name: 'Jo'" --protofiles=backend/src/hero/hero.proto
+    // call grpc methods
+    client.getHeroes({}, printReply)
+    client.getHeroById({ id: 1 }, printReply)
 
     // call streaming methods
-    grpc_cli call localhost:50051 GetHeroByIdStream "id: 2" --protofiles=backend/src/hero/hero.proto
-    grpc_cli call localhost:50051 ListHeroesByNameStream "name: 'Bi'" --protofiles=backend/src/hero/hero.proto
+    var call = client.getHeroesStream().on('data', streamReply).on('status', streamReply); call.write({});
+    var call = client.getHeroByIdStream().on('data', streamReply).on('status', streamReply); call.write({ id: 1 });
+
+Test the regular HTTP REST api at:
+
+    http://localhost:3001/hero
+    http://localhost:3001/hero/1
 
 
 ## Directory structure

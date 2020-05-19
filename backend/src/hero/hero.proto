@@ -3,18 +3,14 @@ syntax = "proto3";
 package hero;
 
 service HeroService {
+  rpc GetHeroes(HeroById) returns (HeroList) {}
   rpc GetHeroById(HeroById) returns (Hero) {}
-  rpc ListHeroesByName(HeroByName) returns (HeroList) {}
+  rpc GetHeroesStream(stream HeroById) returns (stream HeroList) {}
   rpc GetHeroByIdStream(stream HeroById) returns (stream Hero) {}
-  rpc ListHeroesByNameStream(stream HeroByName) returns (stream HeroList) {}
 }
 
 message HeroById {
   int32 id = 1;
-}
-
-message HeroByName {
-  string name = 1;
 }
 
 message Hero {
