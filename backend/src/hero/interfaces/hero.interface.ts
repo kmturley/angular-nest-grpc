@@ -3,4 +3,6 @@ export interface Hero {
   name: string;
 }
 
-export interface HeroList extends Array<Hero> { }
+export interface HeroList {
+  heroes: Hero[]
+}
