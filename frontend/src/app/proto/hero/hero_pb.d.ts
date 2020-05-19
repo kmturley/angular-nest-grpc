@@ -23,26 +23,6 @@ export namespace HeroById {
   }
 }
 
-export class HeroByName extends jspb.Message {
-  getName(): string;
-  setName(value: string): void;
-
-  serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): HeroByName.AsObject;
-  static toObject(includeInstance: boolean, msg: HeroByName): HeroByName.AsObject;
-  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
-  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: HeroByName, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): HeroByName;
-  static deserializeBinaryFromReader(message: HeroByName, reader: jspb.BinaryReader): HeroByName;
-}
-
-export namespace HeroByName {
-  export type AsObject = {
-    name: string,
-  }
-}
-
 export class Hero extends jspb.Message {
   getId(): number;
   setId(value: number): void;

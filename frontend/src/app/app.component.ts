@@ -32,18 +32,18 @@ export class AppComponent implements OnInit {
   }
 
   getHeroes() {
-    this.api.list('hero', 'Jo').then((data: object) => {
+    this.api.list('hero', 2).then((data: object) => {
       this.heroes = data['heroesList'] as HeroList;
       this.getHeroStream();
     });
   }
 
   getHeroStream() {
-    this.heroStream = this.api.getStream('hero', 2);
+    this.heroStream = this.api.getStream('hero', 3);
     this.getHeroesStream();
   }
 
   getHeroesStream() {
-    this.heroesStream = this.api.listStream('hero', 'Bi');
+    this.heroesStream = this.api.listStream('hero', 4);
   }
 }

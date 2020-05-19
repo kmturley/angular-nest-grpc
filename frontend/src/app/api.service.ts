@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HeroServiceClient, Status } from './proto/hero/hero_pb_service';
-import { HeroById, HeroByName, Hero, HeroList } from './proto/hero/hero_pb';
+import { HeroById, Hero, HeroList } from './proto/hero/hero_pb';
 
 @Injectable({
   providedIn: 'root'
@@ -32,9 +32,9 @@ export class ApiService {
   list(path, val): Promise <object> {
     return new Promise((resolve, reject) => {
       console.log('ApiService.list', path, val);
-      const req = new HeroByName();
-      req.setName(val);
-      this.client.listHeroesByName(req, null, (err, response: HeroList) => {
+      const req = new HeroById();
+      req.setId(val);
+      this.client.getHeroes(req, null, (err, response: HeroList) => {
         console.log('ApiService.list.response', response.toObject());
         if (err) {
           return reject(err);;
@@ -69,9 +69,9 @@ export class ApiService {
   listStream(path, val): Observable <HeroList> {
     return new Observable(obs => {
       console.log('ApiService.listStream', path, val);
-      const req = new HeroByName();
-      req.setName(val);
-      const stream = this.client.listHeroesByNameStream();
+      const req = new HeroById();
+      req.setId(val);
+      const stream = this.client.getHeroesStream();
       stream.on('status', (status: Status) => {
         console.log('ApiService.getStream.status', status);
       });
