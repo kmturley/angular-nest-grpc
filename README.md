@@ -2,10 +2,10 @@
 
 Example full-stack Typescript project using:
 
-* Angular 7.2.x
-* NestJS 5.6.x
-* Protocol Buffers 3.2.x
-* Envoy Proxy 1.x
+* Angular 9.1.x
+* NestJS 7.0.x
+* Protocol Buffers 3.12.x
+* Envoy Proxy 1.14.x
 
 
 ## Installation

@@ -14,6 +14,8 @@ export class AppComponent implements OnInit {
   heroes: HeroList;
   heroStream: Observable<Hero>;
   heroesStream: Observable<HeroList>;
+  heroRest: Observable<Object>;
+  heroesRest: Observable<Object>;
 
   constructor(
     private api: ApiService
@@ -45,5 +47,15 @@ export class AppComponent implements OnInit {
 
   getHeroesStream() {
     this.heroesStream = this.api.listStream('hero', 4);
+    this.getHeroRest();
+  }
+
+  getHeroRest() {
+    this.heroRest = this.api.getRest('hero', 1);
+    this.getHeroesRest();
+  }
+
+  getHeroesRest() {
+    this.heroesRest = this.api.listRest('hero');
   }
 }

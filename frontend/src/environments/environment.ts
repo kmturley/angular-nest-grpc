@@ -3,6 +3,8 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
+  apiProxy: 'http://localhost:8080',
+  apiRest: 'http://localhost:3001',
   production: false
 };
 

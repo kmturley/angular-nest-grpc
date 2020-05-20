@@ -1,8 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { HeroServiceClient, Status } from './proto/hero/hero_pb_service';
 import { HeroById, Hero, HeroList } from './proto/hero/hero_pb';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,10 @@ import { HeroById, Hero, HeroList } from './proto/hero/hero_pb';
 export class ApiService {
   client: HeroServiceClient;
 
-  constructor() {
-    this.client = new HeroServiceClient('http://localhost:8080');
+  constructor(
+    private http: HttpClient
+  ) {
+    this.client = new HeroServiceClient(environment.apiProxy);
   }
 
   get(path, val): Promise <object> {
@@ -86,5 +90,13 @@ export class ApiService {
       });
       stream.write(req);
     });
+  }
+
+  getRest(path, val): Observable<Object> {
+    return this.http.get(`${environment.apiRest}/${path}/${val}`);
+  }
+
+  listRest(path): Observable<Object> {
+    return this.http.get(`${environment.apiRest}/${path}`);
   }
 }
